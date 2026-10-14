@@ -1,24 +1,103 @@
+
 # Modeling Decisions
 
-## Prediction Objective
+## 1. Research question
 
-Predict students' final academic outcomes using information available at enrollment.
+How effectively can classical machine-learning models predict students' final academic outcomes using information available at enrollment?
 
-## Target
+The target variable is `Target`, with three classes:
 
-`Target`, with three classes: Dropout, Enrolled, and Graduate.
+- `Graduate`
+- `Dropout`
+- `Enrolled`
 
-## Feature Timing
+This is a three-class classification problem.
 
-First- and second-semester academic performance features will be excluded from the enrollment-time model because they are recorded after enrollment.
+## 2. Prediction point
 
-## Evaluation
+The intended prediction point is enrollment.
 
-Macro-F1 and per-class recall will be used alongside accuracy because the target classes have different frequencies.
+The model should use only information that would reasonably be available at that time. Features recorded after enrollment must not be included in the enrollment-time model.
 
-## Pending Decisions
+## 3. Excluded post-enrollment features
 
-- Verify the timing of financial-status and economic-context features.
-- Finalize categorical and numerical feature types.
-- Choose preprocessing methods.
-- Establish the train-test split and model-selection procedure.
+The following 12 features describe first- or second-semester activity or performance and will be excluded from the enrollment-time model:
+
+- `Curricular units 1st sem (credited)`
+- `Curricular units 1st sem (enrolled)`
+- `Curricular units 1st sem (evaluations)`
+- `Curricular units 1st sem (approved)`
+- `Curricular units 1st sem (grade)`
+- `Curricular units 1st sem (without evaluations)`
+- `Curricular units 2nd sem (credited)`
+- `Curricular units 2nd sem (enrolled)`
+- `Curricular units 2nd sem (evaluations)`
+- `Curricular units 2nd sem (approved)`
+- `Curricular units 2nd sem (grade)`
+- `Curricular units 2nd sem (without evaluations)`
+
+The original dataset will remain unchanged.
+
+## 4. Feature representation
+
+Features are provisionally grouped as follows:
+
+- Numerical measurements: grades, age, unemployment rate, inflation rate, and GDP.
+- Categorical or binary features: demographic, educational, application, and other coded categories.
+- Ordered feature: `Application order`, which represents the order of course preference.
+
+These groups guide exploration and preprocessing. The final representations will be determined when the preprocessing pipeline is implemented.
+
+## 5. Features requiring further timing verification
+
+The dataset's variable descriptions do not, by themselves, establish exactly when every feature was recorded.
+
+Before finalizing the enrollment-time feature set, verify the availability at enrollment of:
+
+- `Debtor`
+- `Tuition fees up to date`
+- `Scholarship holder`
+
+Do not include a feature in the final model merely because it exists in the dataset. Record the evidence for its availability at the intended prediction point.
+
+## 6. Planned evaluation
+
+The project will compare a simple baseline with classical machine-learning models.
+
+Planned models:
+
+- Dummy classifier baseline
+- Logistic regression
+- Decision tree
+- Random forest
+
+Planned evaluation measures:
+
+- Macro-F1
+- Recall for each target class
+- Confusion matrix
+- Accuracy as a secondary metric
+
+Macro-F1 gives equal weight to each class's F1 score, which is useful when class frequencies differ.
+
+## 7. Data splitting and preprocessing
+
+The data will be split into training and test sets before fitting learned preprocessing operations.
+
+Any encoders, scalers, or other transformations that learn from data will be fitted on the training data only. A scikit-learn pipeline will help keep preprocessing and model training together and reduce the risk of data leakage.
+
+The test set will be held out for final evaluation rather than repeatedly used to make modeling decisions.
+
+## 8. Interpretation and limitations
+
+The dataset is observational. Associations between features and outcomes do not establish causation.
+
+Model performance on this dataset does not automatically establish performance on other institutions, future cohorts, or a real student-support setting.
+
+The project will report evaluation results and limitations rather than claiming that predictions are certain or that a feature causes dropout.
+
+## 9. Status
+
+Current status: exploratory data analysis and feature review.
+
+The feature set is provisional until feature availability at enrollment has been verified.
