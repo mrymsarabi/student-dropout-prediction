@@ -50,15 +50,17 @@ These groups guide exploration and preprocessing. The final representations will
 
 ## 5. Features requiring further timing verification
 
-The dataset's variable descriptions do not, by themselves, establish exactly when every feature was recorded.
+The UCI dataset description distinguishes information known at enrollment from academic performance recorded at the end of the first and second semesters. However, the available variable descriptions do not specify the exact recording time of every feature.
 
-Before finalizing the enrollment-time feature set, verify the availability at enrollment of:
+For the initial strict enrollment-time experiment, the following features will be excluded until their availability at the prediction point can be verified:
 
 - `Debtor`
 - `Tuition fees up to date`
 - `Scholarship holder`
 
-Do not include a feature in the final model merely because it exists in the dataset. Record the evidence for its availability at the intended prediction point.
+This is a conservative methodological decision. It does not mean that these features are necessarily post-enrollment variables.
+
+If reliable documentation confirms that a feature was available at enrollment, it may be included in a separately documented experiment. The initial feature set will remain unchanged for the first baseline comparison.
 
 ## 6. Planned evaluation
 
